@@ -55,7 +55,7 @@ module ActiveAdmin
       end
 
       ActiveRecord::Base.uncached do
-        (1..paginated_collection.total_pages).each do |page|
+        (1..paginated_collection.pages).each do |page|
           paginated_collection(page).each do |resource|
             resource = controller.send :apply_decorator, resource
             csv << CSV.generate_line(build_row(resource, columns, options), **csv_options)
@@ -126,7 +126,7 @@ module ActiveAdmin
     end
 
     def paginated_collection(page_no = 1)
-      @collection.public_send(Kaminari.config.page_method_name, page_no).per(batch_size)
+      pagy(@collection, page: page_no, items: batch_size)
     end
 
     def batch_size

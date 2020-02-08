@@ -51,7 +51,8 @@ RSpec.describe ActiveAdmin::Views::IndexAsTable::IndexTableFor do
           Post.new(title: 'Third Post', starred: true),
           Post.new(title: 'Fourth Post', starred: true)
         ]
-        Kaminari.paginate_array(posts, limit: 2)
+        pagy(posts, items: 2)
+        # Kaminari.paginate_array(posts, limit: 2)
       end
       let(:collection) do
         base_collection.page(1)

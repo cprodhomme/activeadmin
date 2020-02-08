@@ -183,7 +183,7 @@ Feature: Registering Pages
     """
     ActiveAdmin.register_page "Special users" do
       content do
-        collection = Kaminari.paginate_array(User.all).page(params.fetch(:page, 1))
+        collection = pagy(User.all, params.fetch(:page, 1))
 
         table_for(collection, class: "index_table") do
           column :first_name

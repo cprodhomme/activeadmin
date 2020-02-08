@@ -30,7 +30,7 @@ module ActiveAdmin
 
       # Builds a new paginated collection component
       #
-      # collection => A paginated collection from kaminari
+      # collection => A paginated collection from pagy
       # options    => These options will be passed to `page_entries_info`
       #   entry_name     => The name to display for this resource collection
       #   params         => Extra parameters for pagination (e.g. { anchor: 'details' })
@@ -45,8 +45,8 @@ module ActiveAdmin
         @display_total  = options.delete(:pagination_total) { true }
         @per_page       = options.delete(:per_page)
 
-        unless collection.respond_to?(:total_pages)
-          raise(StandardError, "Collection is not a paginated scope. Set collection.page(params[:page]).per(10) before calling :paginated_collection.")
+        unless collection.respond_to?(:pages)
+          raise(StandardError, "Collection is not a paginated scope. Set pagy(collection, page: params[:page], items: 10) before calling :paginated_collection.")
         end
 
         @contents = div(class: "paginated_collection_contents")
@@ -97,13 +97,13 @@ module ActiveAdmin
         options[:param_name] = @param_name if @param_name
 
         if !@display_total
-          # The #paginate method in kaminari will query the resource with a
+          # The #paginate method in Pagy will query the resource with a
           # count(*) to determine how many pages there should be unless
-          # you pass in the :total_pages option. We issue a query to determine
+          # you pass in the :pages option. We issue a query to determine
           # if there is another page or not, but the limit/offset make this
           # query fast.
-          offset = collection.offset(collection.current_page * collection.limit_value).limit(1).count
-          options[:total_pages] = collection.current_page + offset
+          offset = collection.offset(collection.page * collection.limit_value).limit(1).count
+          options[:total_pages] = collection.page + offset
           options[:right] = 0
         end
 
@@ -129,15 +129,15 @@ module ActiveAdmin
         end
 
         if @display_total
-          if collection.total_pages < 2
+          if collection.pages < 2
             case collection_size
             when 0; I18n.t("active_admin.pagination.empty",    model: entries_name)
             when 1; I18n.t("active_admin.pagination.one",      model: entry_name)
             else;   I18n.t("active_admin.pagination.one_page", model: entries_name, n: collection.total_count)
             end
           else
-            offset = (collection.current_page - 1) * collection.limit_value
-            total  = collection.total_count
+            offset = (collection.page - 1) * collection.limit_value
+            total  = collection.pages
             I18n.t "active_admin.pagination.multiple",
                    model: entries_name,
                    total: total,
@@ -146,8 +146,8 @@ module ActiveAdmin
           end
         else
           # Do not display total count, in order to prevent a `SELECT count(*)`.
-          # To do so we must not call `collection.total_pages`
-          offset = (collection.current_page - 1) * collection.limit_value
+          # To do so we must not call `collection.pages`
+          offset = (collection.page - 1) * collection.limit_value
           I18n.t "active_admin.pagination.multiple_without_total",
                  model: entries_name,
                  from: offset + 1,

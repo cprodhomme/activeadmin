@@ -64,7 +64,7 @@ Tool                  | Description
 [Devise]              | Powerful, extensible user authentication
 [Formtastic]          | A Rails form builder plugin with semantically rich and accessible markup
 [Inherited Resources] | Simplifies controllers with pre-built RESTful controller actions
-[Kaminari]            | Elegant pagination for any sort of collection
+[Pagy]                | Pagy is the ultimate pagination gem that outperforms the others in each and every benchmark and comparison.
 [Ransack]             | Provides a simple search API to query your data
 
 ## Security contact information
@@ -88,7 +88,7 @@ Thanks to [Open Collective][opencollective contributors] and all our Open Collec
 [Devise]: https://github.com/plataformatec/devise
 [Formtastic]: https://github.com/justinfrench/formtastic
 [Inherited Resources]: https://github.com/activeadmin/inherited_resources
-[Kaminari]: https://github.com/kaminari/kaminari
+[Pagy]: https://github.com/ddnexus/pagy
 [Ransack]: https://github.com/activerecord-hackery/ransack
 
 [rubygems_badge]: http://img.shields.io/gem/v/activeadmin.svg

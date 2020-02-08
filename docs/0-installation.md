@@ -91,8 +91,8 @@ You should also sync these files with their counterparts in the AA source code:
 
 ## will_paginate
 
-If you use `will_paginate` in your app, you need to configure an initializer for
-Kaminari to avoid conflicts.
+If you use `will_paginate` or `kaminari` in your app, you need to configure an initializer for
+Pagy to avoid conflicts.
 
 ```ruby
 # config/initializers/kaminari.rb

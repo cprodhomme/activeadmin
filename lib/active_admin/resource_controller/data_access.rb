@@ -250,11 +250,11 @@ module ActiveAdmin
 
       def apply_pagination(chain)
         # skip pagination if already was paginated by scope
-        return chain if chain.respond_to?(:total_pages)
-        page_method_name = Kaminari.config.page_method_name
-        page = params[Kaminari.config.param_name]
+        return chain if chain.respond_to?(:series)
 
-        chain.public_send(page_method_name, page).per(per_page)
+        page = params[Pagy::VARS[:page_param]]
+
+        pagy(chain, page: page, items: per_page)
       end
 
       def collection_applies(options = {})

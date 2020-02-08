@@ -22,7 +22,8 @@ RSpec.describe ActiveAdmin::Views::PaginatedCollection do
 
     let(:collection) do
       posts = [Post.new(title: "First Post"), Post.new(title: "Second Post"), Post.new(title: "Third Post")]
-      Kaminari.paginate_array(posts).page(1).per(5)
+      pagy(posts, page: 1, items: 5)
+      # Kaminari.paginate_array(posts).page(1).per(5)
     end
 
     before do
@@ -53,7 +54,8 @@ RSpec.describe ActiveAdmin::Views::PaginatedCollection do
     context "when specifying :param_name option" do
       let(:collection) do
         posts = 10.times.map { Post.new }
-        Kaminari.paginate_array(posts).page(1).per(5)
+        pagy(posts, page: 1, items: 5)
+        # Kaminari.paginate_array(posts).page(1).per(5)
       end
 
       let(:pagination) { paginated_collection(collection, param_name: :post_page) }
@@ -66,12 +68,13 @@ RSpec.describe ActiveAdmin::Views::PaginatedCollection do
     context "when specifying :params option" do
       let(:collection) do
         posts = 10.times.map { Post.new }
-        Kaminari.paginate_array(posts).page(1).per(5)
+        pagy(posts, page: 1, items: 5)
+        # Kaminari.paginate_array(posts).page(1).per(5)
       end
 
       let(:pagination) { paginated_collection(collection, param_name: :post_page, params: { anchor: 'here' }) }
 
-      it "should pass it through to Kaminari" do
+      it "should pass it through to Pagy" do
         expect(pagination.children.last.content).to match(/\/admin\/posts\?post_page=2#here/)
       end
     end
@@ -79,7 +82,8 @@ RSpec.describe ActiveAdmin::Views::PaginatedCollection do
     context "when specifying download_links: false option" do
       let(:collection) do
         posts = 10.times.map { Post.new }
-        Kaminari.paginate_array(posts).page(1).per(5)
+        pagy(posts, page: 1, items: 5)
+        # Kaminari.paginate_array(posts).page(1).per(5)
       end
 
       let(:pagination) { paginated_collection(collection, download_links: false) }
@@ -92,7 +96,8 @@ RSpec.describe ActiveAdmin::Views::PaginatedCollection do
     context "when specifying :entry_name option with a single item" do
       let(:collection) do
         posts = [Post.new]
-        Kaminari.paginate_array(posts).page(1).per(5)
+        pagy(posts, page: 1, items: 5)
+        # Kaminari.paginate_array(posts).page(1).per(5)
       end
 
       let(:pagination) { paginated_collection(collection, entry_name: "message") }
@@ -113,7 +118,8 @@ RSpec.describe ActiveAdmin::Views::PaginatedCollection do
     context "when specifying :entry_name and :entries_name option with a single item" do
       let(:collection) do
         posts = [Post.new]
-        Kaminari.paginate_array(posts).page(1).per(5)
+        pagy(posts, page: 1, items: 5)
+        # Kaminari.paginate_array(posts).page(1).per(5)
       end
 
       let(:pagination) { paginated_collection(collection, entry_name: "singular", entries_name: "plural") }
@@ -134,7 +140,8 @@ RSpec.describe ActiveAdmin::Views::PaginatedCollection do
     context "when omitting :entry_name with a single item" do
       let(:collection) do
         posts = [Post.new]
-        Kaminari.paginate_array(posts).page(1).per(5)
+        pagy(posts, page: 1, items: 5)
+        # Kaminari.paginate_array(posts).page(1).per(5)
       end
 
       it "should use 'post' as the collection name when there is no I18n translation" do
@@ -161,7 +168,8 @@ RSpec.describe ActiveAdmin::Views::PaginatedCollection do
     context "when specifying an empty collection" do
       let(:collection) do
         posts = []
-        Kaminari.paginate_array(posts).page(1).per(5)
+        pagy(posts, page: 1, items: 5)
+        # Kaminari.paginate_array(posts).page(1).per(5)
       end
 
       it "should display 'No entries found'" do
@@ -194,7 +202,9 @@ RSpec.describe ActiveAdmin::Views::PaginatedCollection do
 
     context "when viewing the last page of a collection that has multiple pages" do
       let(:collection) do
-        Kaminari.paginate_array([Post.new] * 81).page(3).per(30)
+        posts = [Post.new] * 81
+        pagy(posts, page: 3, items: 30)
+        # Kaminari.paginate_array([Post.new] * 81).page(3).per(30)
       end
 
       it "should show the proper item counts" do
@@ -205,12 +215,14 @@ RSpec.describe ActiveAdmin::Views::PaginatedCollection do
 
     context "with :pagination_total" do
       let(:collection) do
-        Kaminari.paginate_array([Post.new] * 256).page(1).per(30)
+        posts = [Post.new] * 256
+        pagy(posts, page: 1, items: 30)
+        # Kaminari.paginate_array([Post.new] * 256).page(1).per(30)
       end
 
       describe "set to false" do
         it "should not show the total item counts" do
-          expect(collection).not_to receive(:total_pages)
+          expect(collection).not_to receive(:pages)
           pagination = paginated_collection(collection, pagination_total: false)
           info = pagination.find_by_class('pagination_information').first.content.gsub('&nbsp;', ' ')
           expect(info).to eq "Displaying posts <b>1 - 30</b>"
@@ -244,7 +256,8 @@ RSpec.describe ActiveAdmin::Views::PaginatedCollection do
     context "when specifying per_page: array option" do
       let(:collection) do
         posts = 10.times.map { Post.new }
-        Kaminari.paginate_array(posts).page(1).per(5)
+        pagy(posts, page: 1, items: 5)
+        # Kaminari.paginate_array(posts).page(1).per(5)
       end
 
       let(:pagination) { paginated_collection(collection, per_page: [1, 2, 3]) }

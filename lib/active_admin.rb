@@ -3,7 +3,7 @@ require 'set'
 
 require 'ransack'
 require 'ransack_ext'
-require 'kaminari'
+require 'pagy'
 require 'formtastic'
 require 'formtastic_i18n'
 require 'inherited_resources'
