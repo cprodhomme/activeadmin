@@ -45,6 +45,7 @@ module ActiveAdmin
         @display_total  = options.delete(:pagination_total) { true }
         @per_page       = options.delete(:per_page)
 
+        puts collection.inspect
         unless collection.respond_to?(:pages)
           raise(StandardError, "Collection is not a paginated scope. Set pagy(collection, page: params[:page], items: 10) before calling :paginated_collection.")
         end
