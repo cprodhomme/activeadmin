@@ -24,6 +24,7 @@ module ActiveAdmin
 
     include Authorization
     include Menu
+    include Pagy::Backend
 
     private
 
