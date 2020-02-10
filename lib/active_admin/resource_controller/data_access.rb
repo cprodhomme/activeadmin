@@ -254,7 +254,8 @@ module ActiveAdmin
 
         page = params[Pagy::VARS[:page_param]]
 
-        pagy(chain, page: page, items: per_page)
+        pagy, collection = pagy(chain, page: page, items: per_page)
+        collection
       end
 
       def collection_applies(options = {})

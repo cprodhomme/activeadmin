@@ -37,16 +37,15 @@ module ActiveAdmin
       #   param_name     => Parameter name for page number in the links (:page by default)
       #   download_links => Download links override (false or [:csv, :pdf])
       #
-      def build(collection, options = {})
-        @collection     = collection
-        @params         = options.delete(:params)
-        @param_name     = options.delete(:param_name)
-        @download_links = options.delete(:download_links)
-        @display_total  = options.delete(:pagination_total) { true }
-        @per_page       = options.delete(:per_page)
+      def build(pagination_collection, options = {})
+        @pagy, @collection = pagination_collection
+        @params            = options.delete(:params)
+        @param_name        = options.delete(:param_name)
+        @download_links    = options.delete(:download_links)
+        @display_total     = options.delete(:pagination_total) { true }
+        @per_page          = options.delete(:per_page)
 
-        puts collection.inspect
-        unless collection.respond_to?(:pages)
+        unless @pagy.respond_to?(:pages)
           raise(StandardError, "Collection is not a paginated scope. Set pagy(collection, page: params[:page], items: 10) before calling :paginated_collection.")
         end
 
@@ -103,12 +102,12 @@ module ActiveAdmin
           # you pass in the :pages option. We issue a query to determine
           # if there is another page or not, but the limit/offset make this
           # query fast.
-          offset = collection.offset(collection.page * collection.limit_value).limit(1).count
-          options[:total_pages] = collection.page + offset
+          offset = collection.offset(@pagy.page * collection.limit_value).limit(1).count
+          options[:total_pages] = @pagy.pages
           options[:right] = 0
         end
 
-        text_node paginate collection, options
+        text_node pagy_nav @pagy, options
       end
 
       include ::ActiveAdmin::Helpers::Collection

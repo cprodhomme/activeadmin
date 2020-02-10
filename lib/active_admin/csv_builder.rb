@@ -55,14 +55,21 @@ module ActiveAdmin
       end
 
       ActiveRecord::Base.uncached do
-        (1..paginated_collection.pages).each do |page|
-          paginated_collection(page).each do |resource|
-            resource = controller.send :apply_decorator, resource
-            csv << CSV.generate_line(build_row(resource, columns, options), **csv_options)
-          end
+        pagy, records = paginated_collection
+        (1..pagy.pages).each do |page|
+          csv = add_records_to_csv(csv, records, controller, columns, options, csv_options)
+          pagy, records = paginated_collection(page + 1)
         end
       end
 
+      csv
+    end
+
+    def add_records_to_csv(csv, records, controller, columns, options, csv_options)
+      records.each do |resource|
+        resource = controller.send :apply_decorator, resource
+        csv << CSV.generate_line(build_row(resource, columns, options), **csv_options)
+      end
       csv
     end
 
