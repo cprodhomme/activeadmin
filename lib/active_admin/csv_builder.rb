@@ -55,10 +55,10 @@ module ActiveAdmin
       end
 
       ActiveRecord::Base.uncached do
-        pagy, records = paginated_collection
-        (1..pagy.pages).each do |page|
+        @pagy, @records = paginated_collection
+        (1..@pagy.pages).each do |page|
           csv = add_records_to_csv(csv, records, controller, columns, options, csv_options)
-          pagy, records = paginated_collection(page + 1)
+          @pagy, @records = paginated_collection(page + 1)
         end
       end
 

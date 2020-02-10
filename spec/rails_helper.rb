@@ -22,6 +22,7 @@ RSpec.configure do |config|
 
   require 'support/active_admin_integration_spec_helper'
   config.include ActiveAdminIntegrationSpecHelper
+  config.include Pagy::Backend
 end
 
 # Force deprecations to raise an exception.
