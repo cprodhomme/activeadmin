@@ -15,6 +15,7 @@ module ActiveAdmin
   #
   #
   class CSVBuilder
+    include Pagy::Backend
 
     # Return a default CSVBuilder for a resource
     # The CSVBuilder's columns would be Id followed by this
