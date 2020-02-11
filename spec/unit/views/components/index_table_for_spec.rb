@@ -51,11 +51,11 @@ RSpec.describe ActiveAdmin::Views::IndexAsTable::IndexTableFor do
           Post.new(title: 'Third Post', starred: true),
           Post.new(title: 'Fourth Post', starred: true)
         ]
-        pagy(posts, items: 2)
-        # Kaminari.paginate_array(posts, limit: 2)
       end
+      let(:items) { 2 }
       let(:collection) do
-        base_collection.page(1)
+        pagy, records = pagy(base_collection, items: items, page: 1)
+        records
       end
 
       let(:table) do
@@ -95,7 +95,8 @@ RSpec.describe ActiveAdmin::Views::IndexAsTable::IndexTableFor do
         end
         context 'viewing the second page' do
           let(:collection) do
-            base_collection.page(2)
+            pagy, records = pagy(base_collection, items: items, page: 2)
+            records
           end
           it 'shows the correct indices' do
             expect(index_values).to eq(['3', '4'])
