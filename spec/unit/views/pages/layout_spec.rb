@@ -47,6 +47,10 @@ RSpec.describe ActiveAdmin::Views::Pages::Layout do
     expect(layout.attributes[:lang]).to eq :en
   end
 
+  it "should have utf-8 on content-type" do
+    expect(layout.build.response_headers['Content-Type']).to eq "text/html; charset=utf-8"
+  end
+
   describe "the body" do
     it "should have class 'active_admin'" do
       expect(layout.build.class_list).to include 'active_admin'
